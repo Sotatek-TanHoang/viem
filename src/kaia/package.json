@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "types": "../_types/kaia/index.d.ts",
+  "module": "../_esm/kaia/index.js",
+  "main": "../_cjs/kaia/index.js"
+}
