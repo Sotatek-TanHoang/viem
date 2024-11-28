@@ -50,7 +50,7 @@ export type KaiaWalletAction<
 export function kaiaWalletAction() {
   return <
     transport extends Transport = Transport,
-    chain extends Chain | undefined = Chain,
+    chain extends Chain | undefined = Chain | undefined,
     account extends Account | undefined = Account | undefined,
     rpcSchema extends CustomRpcSchema | undefined = undefined,
     extended extends WalletActions | undefined = WalletActions | undefined,

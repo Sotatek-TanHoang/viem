@@ -6,9 +6,7 @@ import type {
 import type { TransactionSerializable } from '../../types/transaction.js'
 import type { OneOf } from '../../types/utils.js'
 
-export interface KaiaTransactionResponse extends TransactionResponse {
-  type: TxType
-}
+export interface KaiaTransactionResponse extends TransactionResponse {}
 
 export interface KaiaTransactionRequest
   extends Omit<EthersTransactionRequest, 'kzg'> {
@@ -22,7 +20,7 @@ export interface KaiaTransactionRequest
       type: AccountKeyType
       key: string
     }[]
-    key: string
+    key?: string
   }
 }
 export type KaiaTransactionSerializable = OneOf<
