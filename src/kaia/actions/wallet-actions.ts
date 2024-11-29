@@ -5,20 +5,20 @@ import type {
   SendTransactionParameters,
   SendTransactionReturnType,
 } from '../../actions/index.js'
+import type { SendTransactionRequest } from '../../actions/wallet/sendTransaction.js'
 import type { Client } from '../../clients/createClient.js'
 import type { WalletActions } from '../../clients/decorators/wallet.js'
 import type { Transport } from '../../clients/transports/createTransport.js'
 import type { Account } from '../../types/account.js'
 import type { Chain } from '../../types/chain.js'
 import { prepareTransactionRequest } from '../methods/prepare-transaction-request.js'
+import { sendTransactionAsFeePayer } from '../methods/send-transaction-as-fee-payer.js'
+import { sendTransaction } from '../methods/send-transaction.js'
 import { signTransactionAsFeePayer } from '../methods/sign-transaction-as-fee-payer.js'
 import { signTransaction } from '../methods/sign-transaction.js'
 import type { CustomRpcSchema } from '../rpc-schema.js'
 import type { KaiaClient } from '../types/client.js'
 import type { KaiaTransactionRequest } from '../types/transactions.js'
-import type { SendTransactionRequest } from '../../actions/wallet/sendTransaction.js'
-import { sendTransaction } from '../methods/send-transaction.js'
-import { sendTransactionAsFeePayer } from '../methods/send-transaction-as-fee-payer.js'
 export type KaiaWalletAction<
   chain extends Chain | undefined = Chain | undefined,
   account extends Account | undefined = Account | undefined,

@@ -1,15 +1,15 @@
-import type { Chain } from '../../types/chain.js'
+import type { Address } from 'abitype'
 import type {
   PrepareTransactionRequestParameters,
   PrepareTransactionRequestReturnType,
 } from '../../actions/index.js'
 import type { Account } from '../../types/account.js'
+import type { Chain } from '../../types/chain.js'
 import type { ExactPartial } from '../../types/utils.js'
 import { toHex } from '../../utils/index.js'
 import type { KaiaChain } from '../formatter.js'
 import type { KaiaClient } from '../types/client.js'
 import type { KaiaTransactionRequest } from '../types/transactions.js'
-import type { Address } from 'abitype'
 
 export const prepareTransactionRequest = async <
   chain extends Chain | undefined = Chain | undefined,

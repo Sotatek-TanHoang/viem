@@ -1,6 +1,6 @@
 import type { KaiaClient } from '../types/client.js'
-import { signTransactionAsFeePayer } from './sign-transaction-as-fee-payer.js'
 import type { KaiaTransactionRequest } from '../types/transactions.js'
+import { signTransactionAsFeePayer } from './sign-transaction-as-fee-payer.js'
 export const sendTransactionAsFeePayer = async (
   client: KaiaClient,
   tx: KaiaTransactionRequest | string,

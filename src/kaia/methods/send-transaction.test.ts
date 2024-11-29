@@ -1,10 +1,10 @@
+import { TxType } from '@kaiachain/js-ext-core'
 import { describe, expect, it } from 'vitest'
+import { privateKeyToAccount } from '~viem/accounts/privateKeyToAccount.js'
 import { kairos } from '~viem/chains/index.js'
 import { http, createWalletClient, rpcSchema } from '~viem/index.js'
-import type { CustomRpcSchema } from '../rpc-schema.js'
-import { privateKeyToAccount } from '~viem/accounts/privateKeyToAccount.js'
 import { kaiaWalletAction } from '../actions/wallet-actions.js'
-import { TxType } from '@kaiachain/js-ext-core'
+import type { CustomRpcSchema } from '../rpc-schema.js'
 
 const senderWallet = createWalletClient({
   chain: kairos,
