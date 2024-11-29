@@ -2,10 +2,10 @@ import { isKlaytnTxType } from '@kaiachain/js-ext-core'
 import type { SendTransactionParameters } from '../../actions/index.js'
 import type { SendTransactionRequest } from '../../actions/wallet/sendTransaction.js'
 import type { Chain } from '../../types/chain.js'
-import type { KaiaClient } from '../types/client.js'
-import { signTransaction } from './sign-transaction.js'
 import type { KaiaChain } from '../formatter.js'
+import type { KaiaClient } from '../types/client.js'
 import type { KaiaTransactionRequest } from '../types/transactions.js'
+import { signTransaction } from './sign-transaction.js'
 export const sendTransaction = async (
   client: KaiaClient,
   tx: SendTransactionParameters<
