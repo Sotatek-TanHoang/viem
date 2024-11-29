@@ -1,3 +1,4 @@
+import type { Chain } from '../../types/chain.js'
 import type {
   PrepareTransactionRequestParameters,
   PrepareTransactionRequestReturnType,
@@ -8,17 +9,45 @@ import { toHex } from '../../utils/index.js'
 import type { KaiaChain } from '../formatter.js'
 import type { KaiaClient } from '../types/client.js'
 import type { KaiaTransactionRequest } from '../types/transactions.js'
+import type { Address } from 'abitype'
 
 export const prepareTransactionRequest = async <
+  chain extends Chain | undefined = Chain | undefined,
   account extends Account | undefined = Account | undefined,
+  chainOverride extends Chain | undefined = chain,
+  accountOverride extends Account | Address | undefined = account,
 >(
   client: KaiaClient,
-  txObj: PrepareTransactionRequestParameters<KaiaChain, account, KaiaChain>,
+  txObj: PrepareTransactionRequestParameters<
+    chain,
+    account,
+    chainOverride,
+    accountOverride
+  >,
 ): Promise<
-  PrepareTransactionRequestReturnType<KaiaChain, account, KaiaChain>
+  PrepareTransactionRequestReturnType<
+    chain,
+    account,
+    chainOverride,
+    accountOverride
+  >
 > => {
-  const req = await client.prepareTransactionRequest(txObj)
-  if (typeof txObj.gasLimit === 'undefined') {
+  const req = await client.prepareTransactionRequest(
+    txObj as unknown as PrepareTransactionRequestParameters<
+      KaiaChain,
+      account,
+      KaiaChain
+    >,
+  )
+  if (
+    typeof (
+      txObj as unknown as PrepareTransactionRequestParameters<
+        KaiaChain,
+        account,
+        KaiaChain
+      >
+    ).gasLimit === 'undefined'
+  ) {
     req.gasPrice = await client.request({
       method: 'klay_gasPrice',
       params: [],
@@ -31,7 +60,12 @@ export const prepareTransactionRequest = async <
       type: req?.type,
     })
   }
-  return req
+  return req as unknown as PrepareTransactionRequestReturnType<
+    chain,
+    account,
+    chainOverride,
+    accountOverride
+  >
 }
 const getEstimateGasPayload = async (
   client: KaiaClient,

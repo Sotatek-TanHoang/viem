@@ -19,6 +19,8 @@ export const signTransactionAsFeePayer = async <
   senderTxHashRLP: string | KaiaTransactionRequest,
 ): Promise<string> => {
   const txObj = await getTransactionRequestForSigning(client, senderTxHashRLP)
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log('in stxaf', txObj)
 
   if (client?.account?.signTransaction) {
     return client.account.signTransaction(txObj, {
