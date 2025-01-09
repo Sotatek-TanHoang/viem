@@ -1,3 +1,8 @@
+import {
+  getKaikasTxType,
+  getRpcTxObject,
+  isKlaytnTxType,
+} from '@kaiachain/js-ext-core'
 import type { Client } from '../../clients/createClient.js'
 import type { WalletActions } from '../../clients/decorators/wallet.js'
 import type { Transport } from '../../clients/transports/createTransport.js'
@@ -20,13 +25,32 @@ export const signTransaction = async <
 ): Promise<string> => {
   const txObj = await getTransactionRequestForSigning(client, senderTxHashRLP)
 
+  // is local account
   if (client?.account?.signTransaction) {
     return client.account.signTransaction(txObj, {
       serializer: serializeTransactionKaia,
     })
   }
-  return (await client.request({
-    method: 'eth_signTransaction',
-    params: [txObj],
-  } as any)) as string
+  // kaia tx type
+  if (isKlaytnTxType(txObj.type)) {
+    return client.request(
+      {
+        method: 'klay_signTransaction',
+        params: [
+          { ...getRpcTxObject(txObj), type: getKaikasTxType(txObj.type) },
+        ],
+      } as any,
+      { retryCount: 0 },
+    )
+  }
+  // legacy tx
+  return client.request(
+    {
+      method: 'eth_signTransaction',
+      params: [txObj],
+    } as any,
+    {
+      retryCount: 0,
+    },
+  )
 }

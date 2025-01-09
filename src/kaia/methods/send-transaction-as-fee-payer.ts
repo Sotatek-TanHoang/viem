@@ -8,7 +8,7 @@ export const sendTransactionAsFeePayer = async (
   const signedTx = await signTransactionAsFeePayer(client, tx)
 
   return (await client.request({
-    method: 'kaia_sendRawTransaction',
+    method: 'klay_sendRawTransaction',
     params: [signedTx],
   })) as `0x${string}`
 }

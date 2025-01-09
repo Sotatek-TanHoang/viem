@@ -5,11 +5,9 @@ import type {
 } from '../../actions/index.js'
 import type { Account } from '../../types/account.js'
 import type { Chain } from '../../types/chain.js'
-import type { ExactPartial } from '../../types/utils.js'
-import { toHex } from '../../utils/index.js'
 import type { KaiaChain } from '../formatter.js'
 import type { KaiaClient } from '../types/client.js'
-import type { KaiaTransactionRequest } from '../types/transactions.js'
+import { getEstimateGasPayload } from '../utils.js'
 
 export const prepareTransactionRequest = async <
   chain extends Chain | undefined = Chain | undefined,
@@ -66,39 +64,4 @@ export const prepareTransactionRequest = async <
     chainOverride,
     accountOverride
   >
-}
-const getEstimateGasPayload = async (
-  client: KaiaClient,
-  txObj: ExactPartial<
-    Pick<
-      KaiaTransactionRequest,
-      'key' | 'from' | 'to' | 'value' | 'data' | 'type'
-    >
-  >,
-) => {
-  const result: Partial<KaiaTransactionRequest> = {}
-  if (txObj.from) {
-    result.from = txObj.from
-  }
-  if (txObj.to) {
-    result.to = txObj.to
-  }
-  if (txObj.value) {
-    result.value = toHex(txObj.value)
-  }
-  if (txObj.data) {
-    result.data = txObj.data
-  }
-  if (txObj.type) {
-    result.type = txObj.type
-  }
-  if (txObj.key) {
-    result.key = txObj.key
-  }
-
-  const estimatedGas = (await client.request({
-    method: 'klay_estimateGas',
-    params: [result],
-  })) as `0x${string}`
-  return Math.floor(Number.parseInt(estimatedGas, 16) * 2.5)
 }
