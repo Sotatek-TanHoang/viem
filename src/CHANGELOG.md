@@ -1,5 +1,93 @@
 # viem
 
+## 2.21.54
+
+### Patch Changes
+
+- [#3081](https://github.com/wevm/viem/pull/3081) [`0d9dfcd1d22d82e995abc4a23fb86614244faa54`](https://github.com/wevm/viem/commit/0d9dfcd1d22d82e995abc4a23fb86614244faa54) Thanks [@danijelTxFusion](https://github.com/danijelTxFusion)! - Added ZKSync local hyperchain networks.
+
+- [`7c0cce92b904f1771ec9747e7aa6a6482159a87b`](https://github.com/wevm/viem/commit/7c0cce92b904f1771ec9747e7aa6a6482159a87b) Thanks [@jxom](https://github.com/jxom)! - Added assertion for ABI-encoding integer ranges.
+
+- [#3093](https://github.com/wevm/viem/pull/3093) [`8b70d75b9d81c5eae05e81cb3bf158a25ae4c617`](https://github.com/wevm/viem/commit/8b70d75b9d81c5eae05e81cb3bf158a25ae4c617) Thanks [@pk-850](https://github.com/pk-850)! - Added ADF Chain.
+
+- [#3095](https://github.com/wevm/viem/pull/3095) [`1d2ae845faadae36a0c25963449bbadc1ff65815`](https://github.com/wevm/viem/commit/1d2ae845faadae36a0c25963449bbadc1ff65815) Thanks [@timothyshen](https://github.com/timothyshen)! - Added Story Odyssey Testnet.
+
+- [#2642](https://github.com/wevm/viem/pull/2642) [`d1d092c19326fe0045233aee0cde8f6ceaff8633`](https://github.com/wevm/viem/commit/d1d092c19326fe0045233aee0cde8f6ceaff8633) Thanks [@0x33dm](https://github.com/0x33dm)! - Added `ping` option to `fallback` Transport.
+
+- [#3089](https://github.com/wevm/viem/pull/3089) [`699c854c1250977c2a6209233685a506df9bcd9b`](https://github.com/wevm/viem/commit/699c854c1250977c2a6209233685a506df9bcd9b) Thanks [@plusminushalf](https://github.com/plusminushalf)! - Added `id` to `WebAuthnAccount`.
+
+- [#3085](https://github.com/wevm/viem/pull/3085) [`acc496adc8d419ce6c593408ee75925c05fb22b6`](https://github.com/wevm/viem/commit/acc496adc8d419ce6c593408ee75925c05fb22b6) Thanks [@Zhangnong](https://github.com/Zhangnong)! - Added multicall3 contract to ThunderCore.
+
+- [`feecb7841145e4a92a1968625a832ccfec68a3d7`](https://github.com/wevm/viem/commit/feecb7841145e4a92a1968625a832ccfec68a3d7) Thanks [@jxom](https://github.com/jxom)! - Updated dependencies.
+
+## 2.21.53
+
+### Patch Changes
+
+- [#3076](https://github.com/wevm/viem/pull/3076) [`6102935c4cea8b39778b8824425ccf00f7377dd8`](https://github.com/wevm/viem/commit/6102935c4cea8b39778b8824425ccf00f7377dd8) Thanks [@ezynda3](https://github.com/ezynda3)! - Updated ApeScan API URL.
+
+- [#3074](https://github.com/wevm/viem/pull/3074) [`9de4385bc84af48efac38e387716ebe2cdbb2cf8`](https://github.com/wevm/viem/commit/9de4385bc84af48efac38e387716ebe2cdbb2cf8) Thanks [@Zhangnong](https://github.com/Zhangnong)! - Added Multicall address to Fluence.
+
+## 2.21.52
+
+### Patch Changes
+
+- [#3070](https://github.com/wevm/viem/pull/3070) [`6edad0263d82b11342dd3a913f97f630b5cc813d`](https://github.com/wevm/viem/commit/6edad0263d82b11342dd3a913f97f630b5cc813d) Thanks [@sherrys808](https://github.com/sherrys808)! - Added Redbelly Mainnet Chain.
+
+- [#3072](https://github.com/wevm/viem/pull/3072) [`c2beb14c4574cab901cc7bda53bd166c444b27fb`](https://github.com/wevm/viem/commit/c2beb14c4574cab901cc7bda53bd166c444b27fb) Thanks [@sajanrajdev](https://github.com/sajanrajdev)! - Added Corn Testnet.
+
+- [#3068](https://github.com/wevm/viem/pull/3068) [`c5768003785321628351b02156abe18291c9186c`](https://github.com/wevm/viem/commit/c5768003785321628351b02156abe18291c9186c) Thanks [@nfmelendez](https://github.com/nfmelendez)! - Fixed `waitForTransactionReceipt` race condition when polling many blocks
+
+- [#3071](https://github.com/wevm/viem/pull/3071) [`29fc49301f6b2adeccb79ed7a69b3e59bac55278`](https://github.com/wevm/viem/commit/29fc49301f6b2adeccb79ed7a69b3e59bac55278) Thanks [@sajanrajdev](https://github.com/sajanrajdev)! - Added Corn Maizenet.
+
+## 2.21.51
+
+### Patch Changes
+
+- [#3056](https://github.com/wevm/viem/pull/3056) [`dffc56114cbc6f0d5bcf8287dd109e0d3244ca81`](https://github.com/wevm/viem/commit/dffc56114cbc6f0d5bcf8287dd109e0d3244ca81) Thanks [@stonega](https://github.com/stonega)! - Added Bool Beta Mainnet.
+
+- [#3062](https://github.com/wevm/viem/pull/3062) [`5ab60e37617e6296e93319f6ffda4b0783d1a853`](https://github.com/wevm/viem/commit/5ab60e37617e6296e93319f6ffda4b0783d1a853) Thanks [@jxom](https://github.com/jxom)! - **Experimental (EIP-7702):** Added `prepareAuthorization`.
+
+- [`2498543a3f165517ae649010a1cb439ff9267637`](https://github.com/wevm/viem/commit/2498543a3f165517ae649010a1cb439ff9267637) Thanks [@jxom](https://github.com/jxom)! - Added Sonic Testnet.
+
+- [#3055](https://github.com/wevm/viem/pull/3055) [`a39c279af93faaa4b1afd61581b811aaa1da7456`](https://github.com/wevm/viem/commit/a39c279af93faaa4b1afd61581b811aaa1da7456) Thanks [@qi-0826](https://github.com/qi-0826)! - Added WorldLand Mainnet.
+
+- [#3053](https://github.com/wevm/viem/pull/3053) [`e135e9fd966fce6791a6eee1e59fe7bdae7be73b`](https://github.com/wevm/viem/commit/e135e9fd966fce6791a6eee1e59fe7bdae7be73b) Thanks [@qi-0826](https://github.com/qi-0826)! - Added SwissDLT Mainnet.
+
+## 2.21.50
+
+### Patch Changes
+
+- [#3045](https://github.com/wevm/viem/pull/3045) [`dd0ae9cd98024f45f7afb2f4bf0c434ce3b2bb09`](https://github.com/wevm/viem/commit/dd0ae9cd98024f45f7afb2f4bf0c434ce3b2bb09) Thanks [@Zhangnong](https://github.com/Zhangnong)! - Added REI Mainnet.
+
+- [#3048](https://github.com/wevm/viem/pull/3048) [`a66b43df8b93b960b3ca60c5477ea2785702a2a9`](https://github.com/wevm/viem/commit/a66b43df8b93b960b3ca60c5477ea2785702a2a9) Thanks [@Zhangnong](https://github.com/Zhangnong)! - Added Planq Mainnet.
+
+- [`d98795c45cbc20bf6525001bd7d73d90e5352645`](https://github.com/wevm/viem/commit/d98795c45cbc20bf6525001bd7d73d90e5352645) Thanks [@jxom](https://github.com/jxom)! - Added 5ireChain.
+
+- [#3050](https://github.com/wevm/viem/pull/3050) [`ac24ad93a42430ad364fa7cfaed2e3a59fb0600d`](https://github.com/wevm/viem/commit/ac24ad93a42430ad364fa7cfaed2e3a59fb0600d) Thanks [@pk-850](https://github.com/pk-850)! - Added Multicall address to Velas EVM Mainnet.
+
+## 2.21.49
+
+### Patch Changes
+
+- [#3004](https://github.com/wevm/viem/pull/3004) [`0c98d991b5ec6990251486d860349718f8e7ea04`](https://github.com/wevm/viem/commit/0c98d991b5ec6990251486d860349718f8e7ea04) Thanks [@atarpara](https://github.com/atarpara)! - **ZKsync:** Fixed `TransactionReceipt` formatter & type.
+
+- [`c4ba3cf8145dd0e6b4f9e14f2b414063fbeeefe0`](https://github.com/wevm/viem/commit/c4ba3cf8145dd0e6b4f9e14f2b414063fbeeefe0) Thanks [@jxom](https://github.com/jxom)! - Added ability to set a nullish `account` on `simulateContract`.
+
+- [#3034](https://github.com/wevm/viem/pull/3034) [`9c1db8933ce6dab1e9dde4c7159f7cb582a78a2d`](https://github.com/wevm/viem/commit/9c1db8933ce6dab1e9dde4c7159f7cb582a78a2d) Thanks [@qi-0826](https://github.com/qi-0826)! - Added Metadium Network.
+
+- [#3033](https://github.com/wevm/viem/pull/3033) [`817023fe2de3edeff30e9454410d4ba346594e7e`](https://github.com/wevm/viem/commit/817023fe2de3edeff30e9454410d4ba346594e7e) Thanks [@qi-0826](https://github.com/qi-0826)! - Added Six Protocol.
+
+- [`459e444a1061a264568904db8a26398bc8d4ecf5`](https://github.com/wevm/viem/commit/459e444a1061a264568904db8a26398bc8d4ecf5) Thanks [@jxom](https://github.com/jxom)! - Added `setSignEntropy` export to improve security of signature generation.
+
+- [#3038](https://github.com/wevm/viem/pull/3038) [`349143282c9cbd21abe0b07b05b7f78c699d8672`](https://github.com/wevm/viem/commit/349143282c9cbd21abe0b07b05b7f78c699d8672) Thanks [@isabelle817](https://github.com/isabelle817)! - Added DisChain.
+
+- [#3035](https://github.com/wevm/viem/pull/3035) [`a598b5a80167609ca0b1f6597fe6ca9fd0ca47fe`](https://github.com/wevm/viem/commit/a598b5a80167609ca0b1f6597fe6ca9fd0ca47fe) Thanks [@SilverPokerKing](https://github.com/SilverPokerKing)! - Added Multicall address to Bitgert.
+
+- [#3040](https://github.com/wevm/viem/pull/3040) [`649cd921090b2273b90fa2aa4226732e501eb3a3`](https://github.com/wevm/viem/commit/649cd921090b2273b90fa2aa4226732e501eb3a3) Thanks [@Kharabet](https://github.com/Kharabet)! - Added Guru Network.
+
+- [#3039](https://github.com/wevm/viem/pull/3039) [`f016b161d078c2de36d5b8fd5b6788ef5773e543`](https://github.com/wevm/viem/commit/f016b161d078c2de36d5b8fd5b6788ef5773e543) Thanks [@isabelle817](https://github.com/isabelle817)! - Added iSunCoin Mainnet.
+
 ## 2.21.48
 
 ### Patch Changes

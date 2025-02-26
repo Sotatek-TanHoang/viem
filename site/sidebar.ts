@@ -1302,6 +1302,10 @@ export const sidebar = {
             text: 'Actions',
             items: [
               {
+                text: 'prepareAuthorization',
+                link: '/experimental/eip7702/prepareAuthorization',
+              },
+              {
                 text: 'signAuthorization',
                 link: '/experimental/eip7702/signAuthorization',
               },
@@ -1369,15 +1373,15 @@ export const sidebar = {
             items: [
               {
                 text: 'hashMessage',
-                link: '/experimental/solady/hashMessage',
+                link: '/experimental/erc7739/hashMessage',
               },
               {
                 text: 'hashTypedData',
-                link: '/experimental/solady/hashTypedData',
+                link: '/experimental/erc7739/hashTypedData',
               },
               {
                 text: 'wrapTypedDataSignature',
-                link: '/experimental/solady/wrapTypedDataSignature',
+                link: '/experimental/erc7739/wrapTypedDataSignature',
               },
             ],
           },
