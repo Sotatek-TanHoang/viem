@@ -5,13 +5,17 @@ import type {
 } from 'ethers'
 import type { TransactionSerializable } from '../../types/transaction.js'
 import type { OneOf } from '../../types/utils.js'
+import type { Account } from '../../types/account.js'
 
 export interface KaiaTransactionResponse extends TransactionResponse {}
 
 export interface KaiaTransactionRequest
-  extends Omit<EthersTransactionRequest, 'kzg'> {
+  extends Omit<EthersTransactionRequest, 'kzg' | 'account' | 'from'> {
+  from?: `${string}` | undefined
+  account?: Account | string | undefined
+
   txSignatures?: string[]
-  feePayer?: string
+  feePayer?: `${string}`
   feePayerSignatures?: string[]
   type?: TxType
   key?: {

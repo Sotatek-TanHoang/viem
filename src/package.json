@@ -154,7 +154,7 @@
     "viem": "^2.21.48",
     "webauthn-p256": "0.0.10",
     "ws": "8.18.0",
-    "@kaiachain/js-ext-core":"^2.0.0"
+    "@kaiachain/js-ext-core": "^2.0.0"
   },
   "license": "MIT",
   "homepage": "https://viem.sh",

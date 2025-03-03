@@ -55,7 +55,9 @@ export type KaiaWalletAction<
     const request extends SendTransactionRequest<chain, chainOverride>,
     chainOverride extends Chain | undefined = undefined,
   >(
-    args: SendTransactionParameters<chain, account, chainOverride, request>,
+    args:
+      | SendTransactionParameters<chain, account, chainOverride, request>
+      | KaiaTransactionRequest,
   ) => Promise<SendTransactionReturnType>
 }
 
