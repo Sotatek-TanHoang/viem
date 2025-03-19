@@ -76,6 +76,9 @@ export const defaultParameters = [
   'type',
 ] as const
 
+/** @internal */
+export const eip1559NetworkCache = /*#__PURE__*/ new Map<string, boolean>()
+
 export type PrepareTransactionRequestParameterType =
   | 'blobVersionedHashes'
   | 'chainId'
@@ -287,6 +290,26 @@ export async function prepareTransactionRequest<
     return chainId
   }
 
+  if (parameters.includes('nonce') && typeof nonce === 'undefined' && account) {
+    if (nonceManager) {
+      const chainId = await getChainId()
+      request.nonce = await nonceManager.consume({
+        address: account.address,
+        chainId,
+        client,
+      })
+    } else {
+      request.nonce = await getAction(
+        client,
+        getTransactionCount,
+        'getTransactionCount',
+      )({
+        address: account.address,
+        blockTag: 'pending',
+      })
+    }
+  }
+
   if (
     (parameters.includes('blobVersionedHashes') ||
       parameters.includes('sidecars')) &&
@@ -316,26 +339,6 @@ export async function prepareTransactionRequest<
 
   if (parameters.includes('chainId')) request.chainId = await getChainId()
 
-  if (parameters.includes('nonce') && typeof nonce === 'undefined' && account) {
-    if (nonceManager) {
-      const chainId = await getChainId()
-      request.nonce = await nonceManager.consume({
-        address: account.address,
-        chainId,
-        client,
-      })
-    } else {
-      request.nonce = await getAction(
-        client,
-        getTransactionCount,
-        'getTransactionCount',
-      )({
-        address: account.address,
-        blockTag: 'pending',
-      })
-    }
-  }
-
   if (
     (parameters.includes('fees') || parameters.includes('type')) &&
     typeof type === 'undefined'
@@ -345,10 +348,13 @@ export async function prepareTransactionRequest<
         request as TransactionSerializable,
       ) as any
     } catch {
-      // infer type from block
-      const block = await getBlock()
-      request.type =
-        typeof block?.baseFeePerGas === 'bigint' ? 'eip1559' : 'legacy'
+      let isEip1559Network = eip1559NetworkCache.get(client.uid)
+      if (typeof isEip1559Network === 'undefined') {
+        const block = await getBlock()
+        isEip1559Network = typeof block?.baseFeePerGas === 'bigint'
+        eip1559NetworkCache.set(client.uid, isEip1559Network)
+      }
+      request.type = isEip1559Network ? 'eip1559' : 'legacy'
     }
   }
 
@@ -389,17 +395,19 @@ export async function prepareTransactionRequest<
       )
         throw new Eip1559FeesNotSupportedError()
 
-      const block = await getBlock()
-      const { gasPrice: gasPrice_ } = await internal_estimateFeesPerGas(
-        client,
-        {
-          block: block as Block,
-          chain,
-          request: request as PrepareTransactionRequestParameters,
-          type: 'legacy',
-        },
-      )
-      request.gasPrice = gasPrice_
+      if (typeof args.gasPrice === 'undefined') {
+        const block = await getBlock()
+        const { gasPrice: gasPrice_ } = await internal_estimateFeesPerGas(
+          client,
+          {
+            block: block as Block,
+            chain,
+            request: request as PrepareTransactionRequestParameters,
+            type: 'legacy',
+          },
+        )
+        request.gasPrice = gasPrice_
+      }
     }
   }
 

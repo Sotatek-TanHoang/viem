@@ -1,8 +1,6 @@
 import type { Address, TypedData } from 'abitype'
-import {
-  type WebAuthnData,
-  parseSignature as parseP256Signature,
-} from 'webauthn-p256'
+import * as Signature from 'ox/Signature'
+import type * as WebAuthnP256 from 'ox/WebAuthnP256'
 
 import type { LocalAccount } from '../../../accounts/types.js'
 import { readContract } from '../../../actions/public/readContract.js'
@@ -36,7 +34,7 @@ export type ToCoinbaseSmartAccountParameters = {
   address?: Address | undefined
   client: Client
   ownerIndex?: number | undefined
-  owners: readonly OneOf<LocalAccount | WebAuthnAccount>[]
+  owners: readonly (Address | OneOf<LocalAccount | WebAuthnAccount>)[]
   nonce?: bigint | undefined
 }
 
@@ -89,11 +87,19 @@ export async function toCoinbaseSmartAccount(
     address: '0x0ba5ed0c6aa8c49038f819e587e2633c4a9f428a',
   } as const
 
-  const owners_bytes = owners.map((owner) =>
-    owner.type === 'webAuthn' ? owner.publicKey : pad(owner.address),
-  )
+  const owners_bytes = owners.map((owner) => {
+    if (typeof owner === 'string') return pad(owner)
+    if (owner.type === 'webAuthn') return owner.publicKey
+    if (owner.type === 'local') return pad(owner.address)
+    throw new BaseError('invalid owner type')
+  })
 
-  const owner = owners[ownerIndex] ?? owners[0]
+  const owner = (() => {
+    const owner = owners[ownerIndex] ?? owners[0]
+    if (typeof owner === 'string')
+      return { address: owner, type: 'address' } as const
+    return owner
+  })()
 
   return toSmartAccount({
     client,
@@ -177,6 +183,7 @@ export async function toCoinbaseSmartAccount(
         hash: parameters.hash,
       })
 
+      if (owner.type === 'address') throw new Error('owner cannot sign')
       const signature = await sign({ hash, owner })
 
       return wrapSignature({
@@ -195,6 +202,7 @@ export async function toCoinbaseSmartAccount(
         hash: hashMessage(message),
       })
 
+      if (owner.type === 'address') throw new Error('owner cannot sign')
       const signature = await sign({ hash, owner })
 
       return wrapSignature({
@@ -219,6 +227,7 @@ export async function toCoinbaseSmartAccount(
         }),
       })
 
+      if (owner.type === 'address') throw new Error('owner cannot sign')
       const signature = await sign({ hash, owner })
 
       return wrapSignature({
@@ -241,6 +250,7 @@ export async function toCoinbaseSmartAccount(
         },
       })
 
+      if (owner.type === 'address') throw new Error('owner cannot sign')
       const signature = await sign({ hash, owner })
 
       return wrapSignature({
@@ -319,10 +329,10 @@ export function toWebAuthnSignature({
   webauthn,
   signature,
 }: {
-  webauthn: WebAuthnData
+  webauthn: WebAuthnP256.SignMetadata
   signature: Hex
 }) {
-  const { r, s } = parseP256Signature(signature)
+  const { r, s } = Signature.fromHex(signature)
   return encodeAbiParameters(
     [
       {

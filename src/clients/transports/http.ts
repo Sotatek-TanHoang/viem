@@ -4,6 +4,7 @@ import {
   type UrlRequiredErrorType,
 } from '../../errors/transport.js'
 import type { ErrorType } from '../../errors/utils.js'
+import type { EIP1193RequestFn, RpcSchema } from '../../types/eip1193.js'
 import type { RpcRequest } from '../../types/rpc.js'
 import { createBatchScheduler } from '../../utils/promise/createBatchScheduler.js'
 import {
@@ -18,7 +19,10 @@ import {
   createTransport,
 } from './createTransport.js'
 
-export type HttpTransportConfig = {
+export type HttpTransportConfig<
+  rpcSchema extends RpcSchema | undefined = undefined,
+  raw extends boolean = false,
+> = {
   /**
    * Whether to enable Batch JSON-RPC.
    * @link https://www.jsonrpc.org/specification#batch
@@ -43,22 +47,32 @@ export type HttpTransportConfig = {
   onFetchResponse?: HttpRpcClientOptions['onResponse'] | undefined
   /** The key of the HTTP transport. */
   key?: TransportConfig['key'] | undefined
+  /** Methods to include or exclude from executing RPC requests. */
+  methods?: TransportConfig['methods'] | undefined
   /** The name of the HTTP transport. */
   name?: TransportConfig['name'] | undefined
+  /** Whether to return JSON RPC errors as responses instead of throwing. */
+  raw?: raw | boolean | undefined
   /** The max number of times to retry. */
   retryCount?: TransportConfig['retryCount'] | undefined
   /** The base delay (in ms) between retries. */
   retryDelay?: TransportConfig['retryDelay'] | undefined
+  /** Typed JSON-RPC schema for the transport. */
+  rpcSchema?: rpcSchema | RpcSchema | undefined
   /** The timeout (in ms) for the HTTP request. Default: 10_000 */
   timeout?: TransportConfig['timeout'] | undefined
 }
 
-export type HttpTransport = Transport<
+export type HttpTransport<
+  rpcSchema extends RpcSchema | undefined = undefined,
+  raw extends boolean = false,
+> = Transport<
   'http',
   {
     fetchOptions?: HttpTransportConfig['fetchOptions'] | undefined
     url?: string | undefined
-  }
+  },
+  EIP1193RequestFn<rpcSchema, raw>
 >
 
 export type HttpTransportErrorType =
@@ -69,19 +83,24 @@ export type HttpTransportErrorType =
 /**
  * @description Creates a HTTP transport that connects to a JSON-RPC API.
  */
-export function http(
+export function http<
+  rpcSchema extends RpcSchema | undefined = undefined,
+  raw extends boolean = false,
+>(
   /** URL of the JSON-RPC API. Defaults to the chain's public RPC URL. */
   url?: string | undefined,
-  config: HttpTransportConfig = {},
-): HttpTransport {
+  config: HttpTransportConfig<rpcSchema, raw> = {},
+): HttpTransport<rpcSchema, raw> {
   const {
     batch,
     fetchOptions,
     key = 'http',
+    methods,
     name = 'HTTP JSON-RPC',
     onFetchRequest,
     onFetchResponse,
     retryDelay,
+    raw,
   } = config
   return ({ chain, retryCount: retryCount_, timeout: timeout_ }) => {
     const { batchSize = 1000, wait = 0 } =
@@ -101,6 +120,7 @@ export function http(
     return createTransport(
       {
         key,
+        methods,
         name,
         async request({ method, params }) {
           const body = { method, params }
@@ -128,6 +148,8 @@ export function http(
                 ]
 
           const [{ error, result }] = await fn(body)
+
+          if (raw) return { error, result }
           if (error)
             throw new RpcRequestError({
               body,

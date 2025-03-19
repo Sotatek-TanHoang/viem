@@ -98,7 +98,7 @@ Check out the following places for more viem-related content:
 
 - [GitHub Sponsors](https://github.com/sponsors/wevm?metadata_campaign=docs_support)
 - [Gitcoin Grant](https://wagmi.sh/gitcoin)
-- [wevm.eth](https://etherscan.io/enslookup-search?search=wevm.eth)
+- [wevm.eth](https://etherscan.io/name-lookup-search?id=wevm.eth)
 
 ## Sponsors
 
@@ -225,12 +225,6 @@ Check out the following places for more viem-related content:
     <img alt="reservoir logo" src="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/reservoir-light.svg" width="auto" height="50">
   </picture>
 </a>
-<a href="https://brave.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/brave-dark.svg">
-    <img alt="brave logo" src="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/brave-light.svg" width="auto" height="50">
-  </picture>
-</a>
 <a href="https://linea.build">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/linea-dark.svg">
@@ -255,19 +249,24 @@ Check out the following places for more viem-related content:
     <img alt="thirdweb logo" src="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/thirdweb-light.svg" width="auto" height="50">
   </picture>
 </a>
-<a href="https://uxuy.com">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/uxuy-dark.svg">
-    <img alt="uxuy logo" src="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/uxuy-light.svg" width="auto" height="50">
-  </picture>
-</a>
 <a href="https://polymarket.com">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/polymarket-dark.svg">
     <img alt="polymarket logo" src="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/polymarket-light.svg" width="auto" height="50">
   </picture>
 </a>
-
+<a href="https://routescan.io">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/routescan-dark.svg">
+    <img alt="routescan logo" src="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/routescan-light.svg" width="auto" height="50">
+  </picture>
+</a>
+<a href="https://sequence.xyz">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/sequence-dark.svg">
+    <img alt="sequence logo" src="https://raw.githubusercontent.com/wevm/.github/main/content/sponsors/sequence-light.svg" width="auto" height="50">
+  </picture>
+</a>
 
 ## Contributing
 
@@ -281,3 +280,11 @@ If you're interested in contributing, please read the [contributing docs](/.gith
 ## License
 
 [MIT](/LICENSE) License
+
+
+<br />
+<br />
+
+<a href="https://vercel.com/?utm_source=wevm&utm_campaign=oss">
+  <img src="https://www.datocms-assets.com/31049/1618983297-powered-by-vercel.svg" alt="Powered by Vercel" height="35">
+</a>

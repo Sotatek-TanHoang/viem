@@ -18,6 +18,7 @@ test('default', () => {
     {
       "config": {
         "key": "http",
+        "methods": undefined,
         "name": "HTTP JSON-RPC",
         "request": [Function],
         "retryCount": 3,
@@ -44,6 +45,7 @@ describe('config', () => {
       {
         "config": {
           "key": "mock",
+          "methods": undefined,
           "name": "HTTP JSON-RPC",
           "request": [Function],
           "retryCount": 3,
@@ -69,6 +71,7 @@ describe('config', () => {
       {
         "config": {
           "key": "http",
+          "methods": undefined,
           "name": "Mock Transport",
           "request": [Function],
           "retryCount": 3,
@@ -92,6 +95,7 @@ describe('config', () => {
       {
         "config": {
           "key": "http",
+          "methods": undefined,
           "name": "HTTP JSON-RPC",
           "request": [Function],
           "retryCount": 3,
@@ -117,6 +121,7 @@ describe('config', () => {
       {
         "config": {
           "key": "http",
+          "methods": undefined,
           "name": "HTTP JSON-RPC",
           "request": [Function],
           "retryCount": 3,
@@ -131,6 +136,32 @@ describe('config', () => {
               "Authorization": "wagmi",
             },
           },
+          "url": "https://mockapi.com/rpc",
+        },
+      }
+    `)
+  })
+
+  test('raw', () => {
+    const transport = http('https://mockapi.com/rpc', {
+      raw: true,
+    })({})
+
+    expect(transport).toMatchInlineSnapshot(`
+      {
+        "config": {
+          "key": "http",
+          "methods": undefined,
+          "name": "HTTP JSON-RPC",
+          "request": [Function],
+          "retryCount": 3,
+          "retryDelay": 150,
+          "timeout": 10000,
+          "type": "http",
+        },
+        "request": [Function],
+        "value": {
+          "fetchOptions": undefined,
           "url": "https://mockapi.com/rpc",
         },
       }
@@ -306,22 +337,22 @@ describe('request', () => {
         .map((arg) => JSON.stringify(arg)),
     ).toMatchInlineSnapshot(`
       [
-        "{"jsonrpc":"2.0","id":22,"method":"eth_blockNumber"}",
-        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber","params":[1]}",
-        "{"jsonrpc":"2.0","id":24,"method":"eth_chainId"}",
-        "{"jsonrpc":"2.0","id":25,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":24,"method":"eth_blockNumber","params":[1]}",
+        "{"jsonrpc":"2.0","id":25,"method":"eth_chainId"}",
+        "{"jsonrpc":"2.0","id":26,"method":"eth_blockNumber"}",
       ]
     `)
     expect(results).toMatchInlineSnapshot(`
       [
-        "{"jsonrpc":"2.0","id":22,"method":"eth_blockNumber"}",
-        "{"jsonrpc":"2.0","id":22,"method":"eth_blockNumber"}",
-        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber","params":[1]}",
-        "{"jsonrpc":"2.0","id":22,"method":"eth_blockNumber"}",
-        "{"jsonrpc":"2.0","id":24,"method":"eth_chainId"}",
-        "{"jsonrpc":"2.0","id":22,"method":"eth_blockNumber"}",
-        "{"jsonrpc":"2.0","id":25,"method":"eth_blockNumber"}",
-        "{"jsonrpc":"2.0","id":22,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":24,"method":"eth_blockNumber","params":[1]}",
+        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":25,"method":"eth_chainId"}",
+        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":26,"method":"eth_blockNumber"}",
+        "{"jsonrpc":"2.0","id":23,"method":"eth_blockNumber"}",
       ]
     `)
   })
@@ -387,6 +418,53 @@ describe('request', () => {
     expect(responses.length).toBe(1)
 
     await server.close()
+  })
+
+  test('behavior: methods.exclude', async () => {
+    const server = await createHttpServer((_, res) => {
+      res.end(JSON.stringify({ result: '0x1' }))
+    })
+
+    const transport = http(server.url, {
+      key: 'jsonRpc',
+      name: 'JSON RPC',
+      methods: { exclude: ['eth_a'] },
+    })({ chain: localhost })
+
+    await transport.request({ method: 'eth_b' })
+
+    await expect(() =>
+      transport.request({ method: 'eth_a' }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`
+      [MethodNotSupportedRpcError: Method "eth_a" is not supported.
+
+      Details: method not supported
+      Version: viem@x.y.z]
+    `)
+  })
+
+  test('behavior: methods.include', async () => {
+    const server = await createHttpServer((_, res) => {
+      res.end(JSON.stringify({ result: '0x1' }))
+    })
+
+    const transport = http(server.url, {
+      key: 'jsonRpc',
+      name: 'JSON RPC',
+      methods: { include: ['eth_a', 'eth_b'] },
+    })({ chain: localhost })
+
+    await transport.request({ method: 'eth_a' })
+    await transport.request({ method: 'eth_b' })
+
+    await expect(() =>
+      transport.request({ method: 'eth_c' }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(`
+      [MethodNotSupportedRpcError: Method "eth_c" is not supported.
+
+      Details: method not supported
+      Version: viem@x.y.z]
+    `)
   })
 
   test('behavior: retryCount', async () => {
@@ -478,6 +556,27 @@ describe('request', () => {
 
       Details: The request timed out.
       Version: viem@x.y.z]
+    `)
+  })
+
+  test('behavior: raw', async () => {
+    const transport = http(anvilMainnet.rpcUrl.http, {
+      key: 'jsonRpc',
+      name: 'JSON RPC',
+      raw: true,
+    })({
+      chain: localhost,
+    })
+
+    const response = await transport.request({ method: '' })
+    expect(response).toMatchInlineSnapshot(`
+      {
+        "error": {
+          "code": -32601,
+          "message": "Method not found",
+        },
+        "result": undefined,
+      }
     `)
   })
 

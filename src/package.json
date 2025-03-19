@@ -1,7 +1,7 @@
 {
   "name": "viem",
   "description": "TypeScript Interface for Ethereum",
-  "version": "2.21.54",
+  "version": "2.23.12",
   "type": "module",
   "main": "./_cjs/index.js",
   "module": "./_esm/index.js",
@@ -75,6 +75,11 @@
       "import": "./_esm/experimental/erc7739/index.js",
       "default": "./_cjs/experimental/erc7739/index.js"
     },
+    "./experimental/erc7821": {
+      "types": "./_types/experimental/erc7821/index.d.ts",
+      "import": "./_esm/experimental/erc7821/index.js",
+      "default": "./_cjs/experimental/erc7821/index.js"
+    },
     "./linea": {
       "types": "./_types/linea/index.d.ts",
       "import": "./_esm/linea/index.js",
@@ -126,7 +131,8 @@
       "chains/utils": ["./_types/chains/utils.d.ts"],
       "ens": ["./_types/ens/index.d.ts"],
       "experimental": ["./_types/experimental/index.d.ts"],
-      "experimental/solady": ["./_types/experimental/solady/index.d.ts"],
+      "experimental/erc7739": ["./_types/experimental/erc7739/index.d.ts"],
+      "experimental/erc7821": ["./_types/experimental/erc7821/index.d.ts"],
       "node": ["./_types/node/index.d.ts"],
       "op-stack": ["./_types/op-stack/index.d.ts"],
       "siwe": ["./_types/siwe/index.d.ts"],
@@ -144,17 +150,17 @@
     }
   },
   "dependencies": {
-    "@noble/curves": "1.7.0",
-    "@noble/hashes": "1.6.1",
-    "@scure/bip32": "1.6.0",
-    "@scure/bip39": "1.5.0",
-    "abitype": "1.0.7",
+    "@noble/curves": "1.8.1",
+    "@noble/hashes": "1.7.1",
+    "@scure/bip32": "1.6.2",
+    "@scure/bip39": "1.5.4",
+    "abitype": "1.0.8",
     "isows": "1.0.6",
-    "ox": "0.1.2",
     "viem": "^2.21.48",
     "webauthn-p256": "0.0.10",
-    "ws": "8.18.0",
-    "@kaiachain/js-ext-core": "^2.0.0"
+    "@kaiachain/js-ext-core": "^2.0.0",
+    "ox": "0.6.9",
+    "ws": "8.18.1"
   },
   "license": "MIT",
   "homepage": "https://viem.sh",

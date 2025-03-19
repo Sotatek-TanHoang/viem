@@ -36,6 +36,10 @@ export {
   parseAbiParameter,
   parseAbiParameters,
 } from 'abitype'
+export type {
+  BlockOverrides,
+  Rpc as RpcBlockOverrides,
+} from 'ox/BlockOverrides'
 
 export {
   getContract,
@@ -62,6 +66,11 @@ export {
   type CallParameters,
   type CallReturnType,
 } from './actions/public/call.js'
+export type {
+  CreateAccessListParameters,
+  CreateAccessListReturnType,
+  CreateAccessListErrorType,
+} from './actions/public/createAccessList.js'
 export type {
   CreateBlockFilterErrorType,
   CreateBlockFilterReturnType,
@@ -264,6 +273,22 @@ export type {
 } from './actions/public/multicall.js'
 export type { SnapshotErrorType } from './actions/test/snapshot.js'
 export type {
+  SimulateBlocksParameters,
+  SimulateBlocksReturnType,
+  SimulateBlocksErrorType,
+} from './actions/public/simulateBlocks.js'
+export type {
+  SimulateCallsParameters,
+  SimulateCallsReturnType,
+  SimulateCallsErrorType,
+} from './actions/public/simulateCalls.js'
+export type {
+  GetMutabilityAwareValue,
+  SimulateContractParameters,
+  SimulateContractReturnType,
+  SimulateContractErrorType,
+} from './actions/public/simulateContract.js'
+export type {
   OnBlock,
   OnBlockParameter,
   WatchBlocksErrorType,
@@ -416,11 +441,6 @@ export type {
   SignTypedDataReturnType,
 } from './actions/wallet/signTypedData.js'
 export type {
-  SimulateContractErrorType,
-  SimulateContractParameters,
-  SimulateContractReturnType,
-} from './actions/public/simulateContract.js'
-export type {
   StopImpersonatingAccountErrorType,
   StopImpersonatingAccountParameters,
 } from './actions/test/stopImpersonatingAccount.js'
@@ -465,6 +485,7 @@ export type {
   WriteContractParameters,
   WriteContractReturnType,
 } from './actions/wallet/writeContract.js'
+export type { Call, Calls } from './types/calls.js'
 export type {
   Chain,
   ChainConfig,
@@ -503,6 +524,7 @@ export {
   type FallbackTransportConfig,
   type FallbackTransportErrorType,
   fallback,
+  shouldThrow,
 } from './clients/transports/fallback.js'
 export {
   type HttpTransport,
@@ -560,7 +582,7 @@ export {
   erc4626Abi,
   universalSignatureValidatorAbi,
 } from './constants/abis.js'
-export { zeroAddress } from './constants/address.js'
+export { ethAddress, zeroAddress } from './constants/address.js'
 export {
   deploylessCallViaBytecodeBytecode,
   deploylessCallViaFactoryBytecode,

@@ -63,6 +63,15 @@ export const sidebar = {
       items: [
         { text: 'Introduction', link: '/docs/actions/public/introduction' },
         {
+          text: 'Access List',
+          items: [
+            {
+              text: 'createAccessList',
+              link: '/docs/actions/public/createAccessList',
+            },
+          ],
+        },
+        {
           text: 'Account',
           items: [
             {
@@ -88,6 +97,10 @@ export const sidebar = {
               link: '/docs/actions/public/getBlockTransactionCount',
             },
             {
+              text: 'simulateBlocks',
+              link: '/docs/actions/public/simulateBlocks',
+            },
+            {
               text: 'watchBlockNumber',
               link: '/docs/actions/public/watchBlockNumber',
             },
@@ -98,8 +111,14 @@ export const sidebar = {
           ],
         },
         {
-          text: 'Call',
-          items: [{ text: 'call', link: '/docs/actions/public/call' }],
+          text: 'Calls',
+          items: [
+            { text: 'call', link: '/docs/actions/public/call' },
+            {
+              text: 'simulateCalls',
+              link: '/docs/actions/public/simulateCalls',
+            },
+          ],
         },
         {
           text: 'Chain',
@@ -1270,6 +1289,10 @@ export const sidebar = {
                 text: 'showCallsStatus',
                 link: '/experimental/eip5792/showCallsStatus',
               },
+              {
+                text: 'waitForCallsStatus',
+                link: '/experimental/eip5792/waitForCallsStatus',
+              },
             ],
           },
         ],
@@ -1382,6 +1405,32 @@ export const sidebar = {
               {
                 text: 'wrapTypedDataSignature',
                 link: '/experimental/erc7739/wrapTypedDataSignature',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        text: 'ERC-7821',
+        items: [
+          {
+            text: 'Client',
+            link: '/experimental/erc7821/client',
+          },
+          {
+            text: 'Actions',
+            items: [
+              {
+                text: 'execute',
+                link: '/experimental/erc7821/execute',
+              },
+              {
+                text: 'executeBatches',
+                link: '/experimental/erc7821/executeBatches',
+              },
+              {
+                text: 'supportsExecutionMode',
+                link: '/experimental/erc7821/supportsExecutionMode',
               },
             ],
           },
@@ -1707,6 +1756,14 @@ export const sidebar = {
             link: '/zksync/actions/getL1ChainId',
           },
           {
+            text: 'getL1TokenAddress',
+            link: '/zksync/actions/getL1TokenAddress',
+          },
+          {
+            text: 'getL2TokenAddress',
+            link: '/zksync/actions/getL2TokenAddress',
+          },
+          {
             text: 'getLogProof',
             link: '/zksync/actions/getLogProof',
           },
@@ -1743,6 +1800,32 @@ export const sidebar = {
             text: 'getL1TokenBalance',
             link: '/zksync/actions/getL1TokenBalance',
           },
+          {
+            text: 'isWithdrawalFinalized',
+            link: '/zksync/actions/isWithdrawalFinalized',
+          },
+        ],
+      },
+      {
+        text: 'L2 Wallet Actions',
+        items: [
+          {
+            text: 'withdraw',
+            link: '/zksync/actions/withdraw',
+          },
+        ],
+      },
+      {
+        text: 'L1 Wallet Actions',
+        items: [
+          {
+            text: 'requestExecute',
+            link: '/zksync/actions/requestExecute',
+          },
+          {
+            text: 'finalizeWithdrawal',
+            link: '/zksync/actions/finalizeWithdrawal',
+          },
         ],
       },
       {
@@ -1758,6 +1841,15 @@ export const sidebar = {
               {
                 text: 'getGeneralPaymasterInput',
                 link: '/zksync/utilities/paymaster/getGeneralPaymasterInput',
+              },
+            ],
+          },
+          {
+            text: 'Bridge',
+            items: [
+              {
+                text: 'getL2HashFromPriorityOp',
+                link: '/zksync/utilities/bridge/getL2HashFromPriorityOp',
               },
             ],
           },

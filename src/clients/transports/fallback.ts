@@ -1,3 +1,4 @@
+import { ExecutionRevertedError } from '../../errors/node.js'
 import {
   TransactionRejectedRpcError,
   UserRejectedRequestError,
@@ -84,6 +85,8 @@ export type FallbackTransportConfig = {
   retryCount?: TransportConfig['retryCount'] | undefined
   /** The base delay (in ms) between retries. */
   retryDelay?: TransportConfig['retryDelay'] | undefined
+  /** Callback on whether an error should throw or try the next transport in the fallback. */
+  shouldThrow?: (error: Error) => boolean | undefined
 }
 
 export type FallbackTransport<
@@ -108,6 +111,7 @@ export function fallback<const transports extends readonly Transport[]>(
     key = 'fallback',
     name = 'Fallback',
     rank = false,
+    shouldThrow: shouldThrow_ = shouldThrow,
     retryCount,
     retryDelay,
   } = config
@@ -121,6 +125,8 @@ export function fallback<const transports extends readonly Transport[]>(
         key,
         name,
         async request({ method, params }) {
+          let includes: boolean | undefined
+
           const fetch = async (i = 0): Promise<any> => {
             const transport = transports[i]({
               ...rest,
@@ -152,10 +158,20 @@ export function fallback<const transports extends readonly Transport[]>(
                 status: 'error',
               })
 
-              if (shouldThrow(err as Error)) throw err
+              if (shouldThrow_(err as Error)) throw err
 
               // If we've reached the end of the fallbacks, throw the error.
               if (i === transports.length - 1) throw err
+
+              // Check if at least one other transport includes the method
+              includes ??= transports.slice(i + 1).some((transport) => {
+                const { include, exclude } =
+                  transport({ chain }).config.methods || {}
+                if (include) return include.includes(method)
+                if (exclude) return !exclude.includes(method)
+                return true
+              })
+              if (!includes) throw err
 
               // Otherwise, try the next fallback.
               return fetch(i + 1)
@@ -190,11 +206,12 @@ export function fallback<const transports extends readonly Transport[]>(
   }) as FallbackTransport<transports>
 }
 
-function shouldThrow(error: Error) {
+export function shouldThrow(error: Error) {
   if ('code' in error && typeof error.code === 'number') {
     if (
       error.code === TransactionRejectedRpcError.code ||
       error.code === UserRejectedRequestError.code ||
+      ExecutionRevertedError.nodeMessage.test(error.message) ||
       error.code === 5000 // CAIP UserRejectedRequestError
     )
       return true

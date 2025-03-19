@@ -966,8 +966,8 @@ describe('local account', () => {
     ).toBe(balance_recipient + parseEther('1'))
   })
 
-  test('args: authorizationList (delegate)', async () => {
-    const delegate = privateKeyToAccount(accounts[0].privateKey)
+  test('args: authorizationList (sponsor)', async () => {
+    const sponsor = privateKeyToAccount(accounts[0].privateKey)
     const authority = privateKeyToAccount(accounts[9].privateKey)
     const recipient = privateKeyToAccount(generatePrivateKey())
 
@@ -986,11 +986,11 @@ describe('local account', () => {
     const authorization = await signAuthorization(client, {
       account: authority,
       contractAddress: contractAddress!,
-      delegate,
+      sponsor,
     })
 
     const hash = await sendTransaction(client, {
-      account: delegate,
+      account: sponsor,
       authorizationList: [authorization],
       data: encodeFunctionData({
         abi: BatchCallDelegation.abi,
@@ -1041,11 +1041,11 @@ describe('local account', () => {
   })
 
   test('args: authorizationList (cross-chain)', async () => {
-    const delegate = privateKeyToAccount(accounts[0].privateKey)
+    const sponsor = privateKeyToAccount(accounts[0].privateKey)
     const authority = privateKeyToAccount(generatePrivateKey())
     const recipient = privateKeyToAccount(generatePrivateKey())
 
-    const client_sepolia = anvilSepolia.getClient({ account: delegate })
+    const client_sepolia = anvilSepolia.getClient({ account: sponsor })
 
     // deploy on mainnet
     const { contractAddress, hash } = await deploy(client, {
@@ -1056,7 +1056,7 @@ describe('local account', () => {
     const { nonce } = await getTransaction(client, { hash })
 
     // deploy on sepolia
-    await setNonce(client_sepolia, { address: delegate.address, nonce })
+    await setNonce(client_sepolia, { address: sponsor.address, nonce })
     await deploy(client_sepolia, {
       abi: BatchCallDelegation.abi,
       bytecode: BatchCallDelegation.bytecode.object,
@@ -1067,11 +1067,11 @@ describe('local account', () => {
       account: authority,
       chainId: 0,
       contractAddress: contractAddress!,
-      delegate,
+      sponsor,
     })
 
     const args = {
-      account: delegate,
+      account: sponsor,
       authorizationList: [authorization],
       data: encodeFunctionData({
         abi: BatchCallDelegation.abi,
@@ -1227,60 +1227,58 @@ describe('local account', () => {
     test('default', async () => {
       await setup()
 
-      const account_1 = privateKeyToAccount(sourceAccount.privateKey, {
+      const alice = privateKeyToAccount(accounts[5].privateKey, {
         nonceManager,
       })
-      const account_2 = privateKeyToAccount(targetAccount.privateKey, {
-        nonceManager,
-      })
+      const bob = privateKeyToAccount(accounts[6].privateKey, { nonceManager })
 
       const [hash_1, hash_2, hash_3, hash_4, hash_5] = await Promise.all([
         sendTransaction(client, {
-          account: account_1,
+          account: alice,
           to: targetAccount.address,
           value: parseEther('1'),
         }),
         sendTransaction(client, {
-          account: account_2,
+          account: bob,
           to: targetAccount.address,
           value: parseEther('1'),
         }),
         sendTransaction(client, {
-          account: account_1,
+          account: alice,
           to: targetAccount.address,
           value: parseEther('1'),
         }),
         sendTransaction(client, {
-          account: account_1,
+          account: alice,
           to: targetAccount.address,
           value: parseEther('1'),
         }),
         sendTransaction(client, {
-          account: account_2,
+          account: bob,
           to: targetAccount.address,
           value: parseEther('1'),
         }),
       ])
 
-      expect((await getTransaction(client, { hash: hash_1 })).nonce).toBe(683)
-      expect((await getTransaction(client, { hash: hash_2 })).nonce).toBe(112)
-      expect((await getTransaction(client, { hash: hash_3 })).nonce).toBe(684)
-      expect((await getTransaction(client, { hash: hash_4 })).nonce).toBe(685)
-      expect((await getTransaction(client, { hash: hash_5 })).nonce).toBe(113)
+      expect((await getTransaction(client, { hash: hash_1 })).nonce).toBe(30)
+      expect((await getTransaction(client, { hash: hash_2 })).nonce).toBe(12)
+      expect((await getTransaction(client, { hash: hash_3 })).nonce).toBe(31)
+      expect((await getTransaction(client, { hash: hash_4 })).nonce).toBe(32)
+      expect((await getTransaction(client, { hash: hash_5 })).nonce).toBe(13)
 
       const hash_6 = await sendTransaction(client, {
-        account: account_1,
+        account: alice,
         to: targetAccount.address,
         value: parseEther('1'),
       })
       const hash_7 = await sendTransaction(client, {
-        account: account_1,
+        account: alice,
         to: targetAccount.address,
         value: parseEther('1'),
       })
 
-      expect((await getTransaction(client, { hash: hash_6 })).nonce).toBe(686)
-      expect((await getTransaction(client, { hash: hash_7 })).nonce).toBe(687)
+      expect((await getTransaction(client, { hash: hash_6 })).nonce).toBe(33)
+      expect((await getTransaction(client, { hash: hash_7 })).nonce).toBe(34)
     })
   })
 })
@@ -1546,12 +1544,12 @@ describe('errors', () => {
 })
 
 test('https://github.com/wevm/viem/issues/2721', async () => {
-  const delegate = privateKeyToAccount(generatePrivateKey())
+  const sponsor = privateKeyToAccount(generatePrivateKey())
   const authority = privateKeyToAccount(generatePrivateKey())
   const recipient = privateKeyToAccount(generatePrivateKey())
 
   await setBalance(client, {
-    address: delegate.address,
+    address: sponsor.address,
     value: parseEther('100'),
   })
   await setBalance(client, {
@@ -1570,7 +1568,7 @@ test('https://github.com/wevm/viem/issues/2721', async () => {
   })
 
   const hash = await sendTransaction(client, {
-    account: delegate,
+    account: sponsor,
     authorizationList: [authorization],
     data: encodeFunctionData({
       abi: BatchCallDelegation.abi,

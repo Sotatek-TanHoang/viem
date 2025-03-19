@@ -47,6 +47,12 @@ export {
   call,
 } from './public/call.js'
 export {
+  type CreateAccessListErrorType,
+  type CreateAccessListParameters,
+  type CreateAccessListReturnType,
+  createAccessList,
+} from './public/createAccessList.js'
+export {
   type CreateBlockFilterErrorType,
   type CreateBlockFilterReturnType,
   createBlockFilter,
@@ -243,6 +249,26 @@ export {
   type MulticallReturnType,
   multicall,
 } from './public/multicall.js'
+export {
+  type SimulateBlocksErrorType,
+  type SimulateBlocksParameters,
+  type SimulateBlocksReturnType,
+  simulateBlocks,
+  /** @deprecated Use `SimulateBlocksErrorType` instead */
+  type SimulateBlocksErrorType as SimulateErrorType,
+  /** @deprecated Use `SimulateBlocksParameters` instead */
+  type SimulateBlocksParameters as SimulateParameters,
+  /** @deprecated Use `SimulateBlocksReturnType` instead */
+  type SimulateBlocksReturnType as SimulateReturnType,
+  /** @deprecated Use `simulateBlocks` instead */
+  simulateBlocks as simulate,
+} from './public/simulateBlocks.js'
+export {
+  type SimulateCallsErrorType,
+  type SimulateCallsParameters,
+  type SimulateCallsReturnType,
+  simulateCalls,
+} from './public/simulateCalls.js'
 export {
   type OnBlock,
   type OnBlockParameter,

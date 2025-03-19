@@ -7,6 +7,7 @@ test('exports actions', () => {
     {
       "addChain": [Function],
       "call": [Function],
+      "createAccessList": [Function],
       "createBlockFilter": [Function],
       "createContractEventFilter": [Function],
       "createEventFilter": [Function],
@@ -90,6 +91,9 @@ test('exports actions', () => {
       "signMessage": [Function],
       "signTransaction": [Function],
       "signTypedData": [Function],
+      "simulate": [Function],
+      "simulateBlocks": [Function],
+      "simulateCalls": [Function],
       "simulateContract": [Function],
       "snapshot": [Function],
       "stopImpersonatingAccount": [Function],

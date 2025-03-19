@@ -24,6 +24,14 @@ export {
   showCallsStatus,
 } from './eip5792/actions/showCallsStatus.js'
 export {
+  type WaitForCallsStatusErrorType,
+  type WaitForCallsStatusParameters,
+  type WaitForCallsStatusReturnType,
+  type WaitForCallsStatusTimeoutErrorType,
+  WaitForCallsStatusTimeoutError,
+  waitForCallsStatus,
+} from './eip5792/actions/waitForCallsStatus.js'
+export {
   type WriteContractsErrorType,
   type WriteContractsParameters,
   type WriteContractsReturnType,
@@ -110,6 +118,11 @@ export {
   type Erc7739ActionsParameters,
   erc7739Actions,
 } from './erc7739/decorators/erc7739.js'
+
+export {
+  type Erc7821Actions,
+  erc7821Actions,
+} from './erc7821/decorators/erc7821.js'
 
 export {
   /** @deprecated This is no longer experimental – use `import type { ParseErc6492SignatureErrorType } from 'viem'` instead. */

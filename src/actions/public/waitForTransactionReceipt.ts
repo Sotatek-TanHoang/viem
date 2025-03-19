@@ -5,6 +5,7 @@ import {
   TransactionNotFoundError,
   TransactionReceiptNotFoundError,
   WaitForTransactionReceiptTimeoutError,
+  type WaitForTransactionReceiptTimeoutErrorType,
 } from '../../errors/transaction.js'
 import type { ErrorType } from '../../errors/utils.js'
 import type { Chain } from '../../types/chain.js'
@@ -89,6 +90,7 @@ export type WaitForTransactionReceiptErrorType =
   | GetTransactionErrorType
   | GetTransactionReceiptErrorType
   | WatchBlockNumberErrorType
+  | WaitForTransactionReceiptTimeoutErrorType
   | ErrorType
 
 /**
@@ -308,7 +310,8 @@ export async function waitForTransactionReceipt<
                 let reason: ReplacementReason = 'replaced'
                 if (
                   replacementTransaction.to === replacedTransaction.to &&
-                  replacementTransaction.value === replacedTransaction.value
+                  replacementTransaction.value === replacedTransaction.value &&
+                  replacementTransaction.input === replacedTransaction.input
                 ) {
                   reason = 'repriced'
                 } else if (

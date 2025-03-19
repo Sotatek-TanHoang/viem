@@ -56,7 +56,6 @@ import type {
   EIP1193RequestOptions,
 } from '../types/eip1193.js'
 import { stringToHex } from './encoding/toHex.js'
-import { keccak256 } from './hash/keccak256.js'
 import type { CreateBatchSchedulerErrorType } from './promise/createBatchScheduler.js'
 import { withDedupe } from './promise/withDedupe.js'
 import { type WithRetryErrorType, withRetry } from './promise/withRetry.js'
@@ -100,6 +99,7 @@ export function buildRequest<request extends (args: any) => Promise<any>>(
   return async (args, overrideOptions = {}) => {
     const {
       dedupe = false,
+      methods,
       retryDelay = 150,
       retryCount = 3,
       uid,
@@ -107,8 +107,19 @@ export function buildRequest<request extends (args: any) => Promise<any>>(
       ...options,
       ...overrideOptions,
     }
+
+    const { method } = args
+    if (methods?.exclude?.includes(method))
+      throw new MethodNotSupportedRpcError(new Error('method not supported'), {
+        method,
+      })
+    if (methods?.include && !methods.include.includes(method))
+      throw new MethodNotSupportedRpcError(new Error('method not supported'), {
+        method,
+      })
+
     const requestId = dedupe
-      ? keccak256(stringToHex(`${uid}.${stringify(args)}`))
+      ? stringToHex(`${uid}.${stringify(args)}`)
       : undefined
     return withDedupe(
       () =>

@@ -1,5 +1,7 @@
 import type { Address } from 'abitype'
 
+import type * as BlockOverrides from 'ox/BlockOverrides'
+import type * as Rpc from 'ox/RpcResponse'
 import type {
   RpcEstimateUserOperationGasReturnType,
   RpcGetUserOperationByHashReturnType,
@@ -22,6 +24,7 @@ import type {
   RpcTransactionRequest as TransactionRequest,
   RpcUncle as Uncle,
 } from './rpc.js'
+import type { AccessList } from './transaction.js'
 import type { ExactPartial, OneOf, PartialBy, Prettify } from './utils.js'
 
 //////////////////////////////////////////////////
@@ -208,15 +211,13 @@ export type WalletSendCallsParameters<
 > = [
   {
     calls: readonly {
-      chainId?: chainId | undefined
       to?: Address | undefined
       data?: Hex | undefined
       value?: quantity | undefined
     }[]
     capabilities?: capabilities | undefined
-    /** @deprecated Use `chainId` on `calls` instead. */
     chainId?: chainId | undefined
-    from: Address
+    from?: Address | undefined
     version: string
   },
 ]
@@ -643,6 +644,26 @@ export type PublicRpcSchema = [
           stateOverrideSet: RpcStateOverride,
         ]
     ReturnType: Hex
+  },
+  /**
+   * @description Executes a new message call immediately without submitting a transaction to the network
+   *
+   * @example
+   * provider.request({ method: 'eth_call', params: [{ to: '0x...', data: '0x...' }] })
+   * // => '0x...'
+   */
+  {
+    Method: 'eth_createAccessList'
+    Parameters:
+      | [transaction: ExactPartial<TransactionRequest>]
+      | [
+          transaction: ExactPartial<TransactionRequest>,
+          block: BlockNumber | BlockTag | BlockIdentifier,
+        ]
+    ReturnType: {
+      accessList: AccessList
+      gasUsed: Quantity
+    }
   },
   /**
    * @description Returns the chain ID associated with the current network
@@ -1102,6 +1123,43 @@ export type PublicRpcSchema = [
     Method: 'eth_sendRawTransaction'
     Parameters: [signedTransaction: Hex]
     ReturnType: Hash
+  },
+  /**
+   * @description Simulates execution of a set of calls with optional block and state overrides.
+   * @example
+   * provider.request({ method: 'eth_simulateV1', params: [{ blockStateCalls: [{ calls: [{ from: '0x...', to: '0x...', value: '0x...', data: '0x...' }] }] }, 'latest'] })
+   * // => { ... }
+   */
+  {
+    Method: 'eth_simulateV1'
+    Parameters: [
+      {
+        blockStateCalls: readonly {
+          blockOverrides?: BlockOverrides.Rpc | undefined
+          calls?: readonly ExactPartial<TransactionRequest>[] | undefined
+          stateOverrides?: RpcStateOverride | undefined
+        }[]
+        returnFullTransactions?: boolean | undefined
+        traceTransfers?: boolean | undefined
+        validation?: boolean | undefined
+      },
+      BlockNumber | BlockTag,
+    ]
+    ReturnType: readonly (Block & {
+      calls: readonly {
+        error?:
+          | {
+              data?: Hex | undefined
+              code: number
+              message: string
+            }
+          | undefined
+        logs?: readonly Log[] | undefined
+        gasUsed: Hex
+        returnData: Hex
+        status: Hex
+      }[]
+    })[]
   },
   /**
    * @description Destroys a filter based on filter ID
@@ -1863,11 +1921,22 @@ export type EIP1193Parameters<
     }
 
 export type EIP1193RequestOptions = {
-  // Deduplicate in-flight requests.
+  /** Deduplicate in-flight requests. */
   dedupe?: boolean | undefined
-  // The base delay (in ms) between retries.
+  /** Methods to include or exclude from executing RPC requests. */
+  methods?:
+    | OneOf<
+        | {
+            include?: string[] | undefined
+          }
+        | {
+            exclude?: string[] | undefined
+          }
+      >
+    | undefined
+  /** The base delay (in ms) between retries. */
   retryDelay?: number | undefined
-  // The max number of times to retry.
+  /** The max number of times to retry. */
   retryCount?: number | undefined
   /** Unique identifier for the request. */
   uid?: string | undefined
@@ -1882,17 +1951,37 @@ type DerivedRpcSchema<
 
 export type EIP1193RequestFn<
   rpcSchema extends RpcSchema | undefined = undefined,
+  raw extends boolean = false,
 > = <
   rpcSchemaOverride extends RpcSchemaOverride | undefined = undefined,
   _parameters extends EIP1193Parameters<
     DerivedRpcSchema<rpcSchema, rpcSchemaOverride>
   > = EIP1193Parameters<DerivedRpcSchema<rpcSchema, rpcSchemaOverride>>,
   _returnType = DerivedRpcSchema<rpcSchema, rpcSchemaOverride> extends RpcSchema
-    ? Extract<
-        DerivedRpcSchema<rpcSchema, rpcSchemaOverride>[number],
-        { Method: _parameters['method'] }
-      >['ReturnType']
-    : unknown,
+    ? raw extends true
+      ? OneOf<
+          | {
+              result: Extract<
+                DerivedRpcSchema<rpcSchema, rpcSchemaOverride>[number],
+                { Method: _parameters['method'] }
+              >['ReturnType']
+            }
+          | { error: Rpc.ErrorObject }
+        >
+      : Extract<
+          DerivedRpcSchema<rpcSchema, rpcSchemaOverride>[number],
+          { Method: _parameters['method'] }
+        >['ReturnType']
+    : raw extends true
+      ? OneOf<
+          | {
+              result: unknown
+            }
+          | {
+              error: Rpc.ErrorObject
+            }
+        >
+      : unknown,
 >(
   args: _parameters,
   options?: EIP1193RequestOptions | undefined,

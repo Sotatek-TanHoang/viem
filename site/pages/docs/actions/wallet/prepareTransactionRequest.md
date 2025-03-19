@@ -219,8 +219,8 @@ const request = await walletClient.prepareTransactionRequest({
 Blobs for [Blob Transactions](/docs/guides/blob-transactions). 
 
 ```ts
-import * as kzg from 'c-kzg'
-import { toBlobs, stringToHex } from 'viem'
+import * as cKzg from 'c-kzg'
+import { toBlobs, setupKzg, stringToHex } from 'viem'
 import { mainnetTrustedSetupPath } from 'viem/node'
 
 const kzg = setupKzg(cKzg, mainnetTrustedSetupPath) 
@@ -300,8 +300,8 @@ KZG implementation for [Blob Transactions](/docs/guides/blob-transactions).
 See [`setupKzg`](/docs/utilities/setupKzg) for more information.
 
 ```ts
-import * as kzg from 'c-kzg'
-import { toBlobs, stringToHex } from 'viem'
+import * as cKzg from 'c-kzg'
+import { toBlobs, setupKzg, stringToHex } from 'viem'
 import { mainnetTrustedSetupPath } from 'viem/node'
 
 const kzg = setupKzg(cKzg, mainnetTrustedSetupPath) // [!code focus]
@@ -377,6 +377,7 @@ const request = await walletClient.prepareTransactionRequest({
 Nonce Manager to consume and increment the Account nonce for the transaction request.
 
 ```ts twoslash
+// @noErrors
 // [!include config.ts]
 // ---cut---
 const request = await walletClient.prepareTransactionRequest({
