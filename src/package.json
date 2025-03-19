@@ -45,6 +45,11 @@
       "import": "./_esm/celo/index.js",
       "default": "./_cjs/celo/index.js"
     },
+    "./kaia": {
+      "types": "./_types/kaia/index.d.ts",
+      "import": "./_esm/kaia/index.js",
+      "default": "./_cjs/kaia/index.js"
+    },
     "./chains": {
       "types": "./_types/chains/index.d.ts",
       "import": "./_esm/chains/index.js",
@@ -151,6 +156,9 @@
     "@scure/bip39": "1.5.4",
     "abitype": "1.0.8",
     "isows": "1.0.6",
+    "viem": "^2.21.48",
+    "webauthn-p256": "0.0.10",
+    "@kaiachain/js-ext-core": "^2.0.0",
     "ox": "0.6.9",
     "ws": "8.18.1"
   },

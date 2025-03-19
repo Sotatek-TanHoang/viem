@@ -1,6 +1,8 @@
+import { chainConfig } from '../../kaia/chainConfig.js'
 import { defineChain } from '../../utils/chain/defineChain.js'
 
 export const kaia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
   id: 8_217,
   name: 'Kaia',
   nativeCurrency: {

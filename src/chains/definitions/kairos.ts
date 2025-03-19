@@ -1,6 +1,8 @@
+import { chainConfig } from '../../kaia/chainConfig.js'
 import { defineChain } from '../../utils/chain/defineChain.js'
 
 export const kairos = /*#__PURE__*/ defineChain({
+  ...chainConfig,
   id: 1_001,
   name: 'Kairos Testnet',
   network: 'kairos',
